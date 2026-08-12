@@ -19,11 +19,35 @@ def add_book():
 				'Name': name,
 				'Author': author,
 				'Genre': genre,
-				'Status': 'Available'
+				'Status': 'Available',
+				'Issue_count': 0
 			}
 
 	df.loc[len(df)] = bookdict
 	df.to_csv(path_or_buf=bookcsv, sep=',', index=False)
+
+
+def check_bid(bid, df):
+	# check if bid is an integer
+	try:
+		bid = int(bid)
+	except:
+		print("Book ID can only be an integer value. Please try again.")
+		return False
+
+	if type(bid) != int:
+		print("Book ID can only be an integer value. Please try again.")
+		return False
+
+	# check if bid exists in our csv records
+	bidlist = list(df['Bid'])
+
+	if bid in bidlist:
+		return True
+	else:
+		print("This book ID doesn't exist. Please try again with an existing book ID.")
+		return False
+
 
 
 
@@ -36,13 +60,22 @@ def display_books():
 # Search a book
 def search_book_by_bid():
 	df = pd.read_csv(bookcsv)
-	bid = int(input("Enter the book ID: "))
-	print(df.loc[int(bid-1)])
+	bid = input("Enter the book ID: ")
+	if check_bid(bid, df):
+		print(df.loc[int(bid)-1])
+
 
 	
 def search_book_by_name():
 	df = pd.read_csv(bookcsv)
 	book_name = input("Enter the name of the book: ")
+
+	# check if book name exists in df
+	namelist = list(df['Name'])
+
+	if book_name not in namelist:
+		print("This book '" + book_name + "' doesn't exist in the records.")
+		return
 
 	result = df[df["Name"] == book_name]
 	print(result)
@@ -51,17 +84,19 @@ def search_book_by_name():
 # Update a book
 def update_book():
 	df = pd.read_csv(bookcsv)
-	bid = int(input("Enter the book ID: "))
-	
-	print("Please enter the new data as prompted.")
+	bid = input("Enter the book ID: ")
+	if check_bid(bid, df):
+		bid = int(bid)
+		print("Please enter the new data as prompted.")
 
-	name = input("Enter the new name: ")
-	author = input("Enter the new author's name: ")
-	genre = input("Enter the new genre name: ")
+		name = input("Enter the new name: ")
+		author = input("Enter the new author's name: ")
+		genre = input("Enter the new genre name: ")
+		status = df.loc[bid-1, 'Status']
+		issue_count = df.loc[bid-1, 'Issue_count']
 
-
-	df.loc[int(bid-1)] = [bid, name, author, genre]
-	df.to_csv(path_or_buf=bookcsv, sep=',', index=False)
+		df.loc[bid-1] = [bid, name, author, genre, status, issue_count]
+		df.to_csv(path_or_buf=bookcsv, sep=',', index=False)
 
 
 # Delete a book
@@ -69,45 +104,59 @@ def delete_book():
 	df = pd.read_csv(bookcsv)
 	
 	print()
-	bid = int(input("Enter the book ID: "))
-	print("Are you sure you want to delete book", bid, "?")
-	response = input("Enter Yes or No to continue: ")
+	bid = input("Enter the book ID: ")
+	
+	if check_bid(bid, df):
+		bid = int(bid)
+		print("Are you sure you want to delete book", bid, df.loc[bid-1, 'Name'], 'by', df.loc[bid-1, 'Author'], "?")
+		response = input("Enter Yes or No to continue: ")
 
-	if response == "no" or response == "No":
-		return True
+		if response == "no" or response == "No":
+			return
 
 	
-	newdf = df.drop(bid-1, axis=0)
-	newdf.to_csv(bookcsv, index=False)
-	print("Successfully deleted the book", bid)
+		newdf = df.drop(bid-1, axis=0)
+		newdf.to_csv(bookcsv, index=False)
+		print("Successfully deleted the book", bid, df.loc[bid-1, 'Name'], 'by', df.loc[bid-1, 'Author'])
 
 
 
 # Issue a book
 def issue_book():
 	df = pd.read_csv(bookcsv)
-	bid = int(input("Enter the book ID: "))
+	bid = input("Enter the book ID: ")
 
-	if df.loc[bid-1, 'Status'] == 'Issued':
-		print("This book is already issued.")
-		print("Therefore, it's not in the library.")
-		print("Please try again with some other book.")
+	if check_bid(bid, df):
+		bid = int(bid)
+		if df.loc[bid-1, 'Status'] == 'Issued':
+			print("This book is already issued.")
+			print("Therefore, it's not in the library.")
+			print("Please try again with some other book.")
 	
-	else:
-		df.loc[bid-1, 'Status'] = 'Issued'
-		df.to_csv(path_or_buf=bookcsv, sep=',', index=False)
-		print("Book succesfully issued.")
+		else:
+			df.loc[bid-1, 'Status'] = 'Issued'
+			df.loc[bid-1, 'Issue_count'] += 1
+			df.to_csv(path_or_buf=bookcsv, sep=',', index=False)
+			print("Book succesfully issued.")
 
 
 
 # Return
 def return_book():
 	df = pd.read_csv(bookcsv)
-	bid = int(input("Enter the book ID: "))
+	bid = input("Enter the book ID: ")
 
-	df.loc[bid-1, 'Status'] = 'Available'
-	df.to_csv(path_or_buf=bookcsv, sep=',', index=False)
-	print("Book succesfully returned.")
+	if check_bid(bid, df):
+		bid = int(bid)
+
+		if df.loc[bid-1, 'Status'] == 'Available':
+			print("This book is already avalaible in the library.")
+			print("Please try again with some other book.")	
+			return
+		
+		df.loc[bid-1, 'Status'] = 'Available'
+		df.to_csv(path_or_buf=bookcsv, sep=',', index=False)
+		print("Book succesfully returned.")
 
 
 
