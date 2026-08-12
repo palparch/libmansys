@@ -18,7 +18,8 @@ def add_book():
 				'Bid': int(len(df)+1),
 				'Name': name,
 				'Author': author,
-				'Genre': genre
+				'Genre': genre,
+				'Status': 'Available'
 			}
 
 	df.loc[len(df)] = bookdict
@@ -39,21 +40,50 @@ def search_book_by_bid():
 	print(df.loc[int(bid-1)])
 
 	
-def search_book_by_name(book_name):
+def search_book_by_name():
 	df = pd.read_csv(bookcsv)
-	print(df)
-	print(df.loc[book_name])
+	book_name = input("Enter the name of the book: ")
+
+	result = df[df["Name"] == book_name]
+	print(result)
 
 
-#book_name = input()
-#search_book_by_name(book_name)
 # Update a book
+def update_book():
+	df = pd.read_csv(bookcsv)
+	bid = int(input("Enter the book ID: "))
+	
+	print("Please enter the new data as prompted.")
+
+	name = input("Enter the new name: ")
+	author = input("Enter the new author's name: ")
+	genre = input("Enter the new genre name: ")
 
 
-# Delete
+	df.loc[int(bid-1)] = [bid, name, author, genre]
+	df.to_csv(path_or_buf=bookcsv, sep=',', index=False)
 
 
-# Issue
+# Delete a book
+def delete_book():
+	df = pd.read_csv(bookcsv)
+	
+	print()
+	bid = int(input("Enter the book ID: "))
+	print("Are you sure you want to delete book", bid, "?")
+	response = input("Enter Yes or No to continue: ")
+
+	if response == "no" or response == "No":
+		return True
+
+	
+	newdf = df.drop(bid-1, axis=0)
+	newdf.to_csv(bookcsv, index=False)
+	print("Successfully deleted the book", bid)
+
+
+
+# Issue a book
 
 
 # Return
@@ -140,7 +170,7 @@ while True:
 
 
     elif choice == '5':
-        display_all_books()
+        display_books()
 
     elif choice == '6':
         issue_book()
