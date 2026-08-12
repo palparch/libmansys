@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 
 bookcsv = 'books.csv'
 
@@ -176,8 +177,28 @@ def show_issued_books():
 
 # Books by genre
 # here, we'll print a graph for books by genre to see which book is popular in which genre
+#def unique_values(list1):
+#	for i in list1:
+#		print(i)
+#		newlist = list1.remove(i)
+#		print(newlist)
+#		for j in list(newlist):
+#			issue_count = 0
+#			if i == j:
 
 
+def graph_books_by_genre():
+	df = pd.read_csv(bookcsv)
+	
+	genres = list(df.Genre)
+	issue_count = list(df.Issue_count)
+	
+	
+
+	print(issue_freq)
+
+	#plt.plot(df.Genre, )
+	#plt.show()
 
 
 # Most borrowed books
