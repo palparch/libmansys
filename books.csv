@@ -1,11 +1,11 @@
-Bid,Name,Author,Genre,Status
-1,The Lost World,Arthur Conan Doyle,Adventure,Available
-2,The Lost World,Michael Crichton,Science Fiction,Issued
-3,Moby Dick,Herman Melville,Adventure,Available
-4,Harry Potter and the Chamber of Secrets,J.K. Rowling,Fantasy,Issued
-5,The Martian,Andy Weir,Science Fiction,Available
-6,1984,George Orwell,Dystopian,Issued
-7,The Great Gatsby,F. Scott Fitzgerald,Classic,Available
-8,Animal Farm,George Orwell,Political Satire,Available
-9,The Godfather,Mario Puzo,Crime,Issued
-10,To Kill a Mockingbird,Harper Lee,Classic,Available
+Bid,Name,Author,Genre,Status,Issue_count
+1,The Lost World,Arthur Conan Doyle,Adventure,Available,7
+2,The Lost World,Michael Crichton,Science Fiction,Issued,12
+3,Moby Dick,Herman Melville,Adventure,Available,4
+4,Harry Potter and the Chamber of Secrets,J.K. Rowling,Fantasy,Issued,15
+5,The Martian,Andy Weir,Science Fiction,Available,9
+6,1984,George Orwell,Dystopian,Issued,18
+7,The Great Gatsby,F. Scott Fitzgerald,Classic,Available,6
+8,Animal Farm,George Orwell,Political Satire,Available,11
+9,The Godfather,Mario Puzo,Crime,Issued,8
+10,To Kill a Mockingbird,Harper Lee,Classic,Available,5

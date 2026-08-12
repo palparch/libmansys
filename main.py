@@ -84,32 +84,62 @@ def delete_book():
 
 
 # Issue a book
+def issue_book():
+	df = pd.read_csv(bookcsv)
+	bid = int(input("Enter the book ID: "))
+
+	if df.loc[bid-1, 'Status'] == 'Issued':
+		print("This book is already issued.")
+		print("Therefore, it's not in the library.")
+		print("Please try again with some other book.")
+	
+	else:
+		df.loc[bid-1, 'Status'] = 'Issued'
+		df.to_csv(path_or_buf=bookcsv, sep=',', index=False)
+		print("Book succesfully issued.")
+
 
 
 # Return
+def return_book():
+	df = pd.read_csv(bookcsv)
+	bid = int(input("Enter the book ID: "))
+
+	df.loc[bid-1, 'Status'] = 'Available'
+	df.to_csv(path_or_buf=bookcsv, sep=',', index=False)
+	print("Book succesfully returned.")
 
 
-# Show avaiable
 
 
 # Show issued
+def show_issued_books():
+	df = pd.read_csv(bookcsv)
+
+	print("\nIssued Books")
+	print("-" * 30)
+
+	print('This is the list of issued books:')
+	print(df[df.loc[:, 'Status'] == 'Issued'])
 
 
-# Count books
-
+## GRAPHS
 
 # Books by genre
+# here, we'll print a graph for books by genre to see which book is popular in which genre
+
+
 
 
 # Most borrowed books
+# here, we will just show a graph for number of issues per book
+
+
 
 
 # Top authors
-
-
-# Exit program
-
-
+# here idk which type of graph ill use here
+# but yeah the purpose will be to compare authors on the basis of number of issues all time
 
 
 
@@ -137,62 +167,59 @@ def menu():
     print("=" * 50)
 
 
-while True:
-    menu()
+menu()
+
+choice = input("\nEnter your choice: ")
+
+if choice == '1':
+    add_book()
+
+elif choice == '2':
+    update_book()
+
+elif choice == '3':
+    delete_book()
+
+elif choice == '4':
+    print("\nSearch Book")
+    print("-" * 30)
+    print("1. Search by Book ID")
+    print("2. Search by Book Name")
 
     choice = input("\nEnter your choice: ")
 
     if choice == '1':
-        add_book()
+        search_book_by_bid()
 
     elif choice == '2':
-        update_book()
-
-    elif choice == '3':
-        delete_book()
-
-    elif choice == '4':
-        print("\nSearch Book")
-        print("-" * 30)
-        print("1. Search by Book ID")
-        print("2. Search by Book Name")
-
-        choice = input("\nEnter your choice: ")
-
-        if choice == '1':
-            search_book_by_bid()
-
-        elif choice == '2':
-            search_book_by_name()
-
-        else:
-            print("\nInvalid choice.")
-
-
-    elif choice == '5':
-        display_books()
-
-    elif choice == '6':
-        issue_book()
-
-    elif choice == '7':
-        return_book()
-
-    elif choice == '8':
-        show_issued()
-
-    elif choice == '9':
-        books_by_genre()
-
-    elif choice == '10':
-        most_borrowed()
-
-    elif choice == '11':
-        top_authors()
-
-    elif choice == '0':
-        print("\nThank you for using the Library Management System!")
-        break
+        search_book_by_name()
 
     else:
-        print("\nInvalid choice. Please enter a number from 0 to 11.")
+        print("\nInvalid choice.")
+
+elif choice == '5':
+    display_books()
+
+elif choice == '6':
+    issue_book()
+
+elif choice == '7':
+    return_book()
+
+elif choice == '8':
+	show_issued_books()
+
+elif choice == '9':
+    graph_books_by_genre()
+
+elif choice == '10':
+    graph_most_borrowed()
+
+elif choice == '11':
+    graph_top_authors()
+
+elif choice == '0':
+    print("\nThank you for using the Library Management System!")
+
+else:
+    print("\nInvalid choice. Please enter a number from 0 to 11.")
