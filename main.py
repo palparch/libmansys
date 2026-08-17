@@ -177,14 +177,18 @@ def show_issued_books():
 
 # Books by genre
 # here, we'll print a graph for books by genre to see which book is popular in which genre
-#def unique_values(list1):
-#	for i in list1:
-#		print(i)
-#		newlist = list1.remove(i)
-#		print(newlist)
-#		for j in list(newlist):
-#			issue_count = 0
-#			if i == j:
+def unique_values(values, freq_list):
+	value_freq_dict = {}
+
+	for i in range(0, len(values)):
+		value = values[i]
+
+		if value in value_freq_dict:
+			value_freq_dict[value] += freq_list[i]
+		else:
+			value_freq_dict[value] = freq_list[i]
+
+	return value_freq_dict
 
 
 def graph_books_by_genre():
@@ -193,12 +197,13 @@ def graph_books_by_genre():
 	genres = list(df.Genre)
 	issue_count = list(df.Issue_count)
 	
-	
+	genre_freq = unique_values(genres, issue_count)
 
-	print(issue_freq)
-
-	#plt.plot(df.Genre, )
-	#plt.show()
+	plt.bar(genre_freq.keys(), genre_freq.values())
+	plt.xlabel('Genres')
+	plt.ylabel('Total no. of issues per genre')
+	plt.xticks(range(0,7), list(genre_freq.keys())[:], rotation=0)
+	plt.show()
 
 
 # Most borrowed books
