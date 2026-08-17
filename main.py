@@ -208,7 +208,13 @@ def graph_books_by_genre():
 
 # Most borrowed books
 # here, we will just show a graph for number of issues per book
+# lets show the top 10 books
+def graph_top_ten_books():
+	df = pd.read_csv(bookcsv)
+	df = df.sort_values(by='Issue_count', ascending=False)
+	df = df.head(10)
 
+	print("wip here")
 
 
 
@@ -288,7 +294,7 @@ elif choice == '9':
     graph_books_by_genre()
 
 elif choice == '10':
-    graph_most_borrowed()
+	graph_top_ten_books()
 
 elif choice == '11':
     graph_top_authors()
