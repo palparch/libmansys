@@ -209,12 +209,49 @@ def graph_books_by_genre():
 # Most borrowed books
 # here, we will just show a graph for number of issues per book
 # lets show the top 10 books
+
+def shorten_words(list1, length):
+	wordlist = []
+	letterlist = []
+	for i in list1:
+		wordlist.append(list(i))
+
+	intermed_list = []
+	j = 0
+
+	for i in range(0, len(wordlist)):
+		if len(wordlist[i]) < length:
+			letterlist.append(wordlist[i])
+		else:
+			for j in range (0, length):
+				intermed_list.append(str(wordlist[i][j]))
+			intermed_list.append('...')
+			letterlist.append(list(intermed_list))
+			intermed_list = []
+
+	
+	print(letterlist)
+	
+	finallist = []
+	for i in letterlist:
+		finallist.append("".join(i))
+	
+	print(finallist)
+
+	return finallist
+
+
+
+
 def graph_top_ten_books():
 	df = pd.read_csv(bookcsv)
 	df = df.sort_values(by='Issue_count', ascending=False)
 	df = df.head(10)
 
-	print("wip here")
+	plt.barh(shorten_words(df.Name, 15), df.Issue_count)
+	plt.xlabel('Name of Books')
+	plt.ylabel('Total no. of issues per books')
+	plt.show()
 
 
 
