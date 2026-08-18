@@ -1,11 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from datetime import date
 
 bookcsv = 'books.csv'
-
-
-# Initialise csv file if it doesn't exist
-
 
 # Add a book
 def add_book():
@@ -21,7 +18,8 @@ def add_book():
 				'Author': author,
 				'Genre': genre,
 				'Status': 'Available',
-				'Issue_count': 0
+				'Issue_count': 0,
+				'Date_issued': ''
 			}
 
 	df.loc[len(df)] = bookdict
@@ -86,18 +84,21 @@ def search_book_by_name():
 def update_book():
 	df = pd.read_csv(bookcsv)
 	bid = input("Enter the book ID: ")
-	if check_bid(bid, df):
-		bid = int(bid)
-		print("Please enter the new data as prompted.")
+	if not check_bid(bid, df):
+		return
+		
+	bid = int(bid)
+	print("Please enter the new data as prompted.")
 
-		name = input("Enter the new name: ")
-		author = input("Enter the new author's name: ")
-		genre = input("Enter the new genre name: ")
-		status = df.loc[bid-1, 'Status']
-		issue_count = df.loc[bid-1, 'Issue_count']
+	name = input("Enter the new name: ")
+	author = input("Enter the new author's name: ")
+	genre = input("Enter the new genre name: ")
+	status = df.loc[bid-1, 'Status']
+	issue_count = df.loc[bid-1, 'Issue_count']
+	date_issued = df.loc[bid-1, 'Date_issued']
 
-		df.loc[bid-1] = [bid, name, author, genre, status, issue_count]
-		df.to_csv(path_or_buf=bookcsv, sep=',', index=False)
+	df.loc[bid-1] = [bid, name, author, genre, status, issue_count, date_issued]
+	df.to_csv(path_or_buf=bookcsv, sep=',', index=False)
 
 
 # Delete a book
@@ -107,18 +108,26 @@ def delete_book():
 	print()
 	bid = input("Enter the book ID: ")
 	
-	if check_bid(bid, df):
-		bid = int(bid)
-		print("Are you sure you want to delete book", bid, df.loc[bid-1, 'Name'], 'by', df.loc[bid-1, 'Author'], "?")
-		response = input("Enter Yes or No to continue: ")
+	if not check_bid(bid, df):
+		return	
 
-		if response == "no" or response == "No":
-			return
+	bid = int(bid)
+	print("Are you sure you want to delete book", bid, df.loc[bid-1, 'Name'], 'by', df.loc[bid-1, 'Author'], "?")
+	response = input("Enter Yes or No to continue: ")
+
+	if response == "no" or response == "No" or response == "NO":
+		return
 
 	
-		newdf = df.drop(bid-1, axis=0)
-		newdf.to_csv(bookcsv, index=False)
-		print("Successfully deleted the book", bid, df.loc[bid-1, 'Name'], 'by', df.loc[bid-1, 'Author'])
+	newdf = df.drop(bid-1, axis=0)
+		
+	# change the bid and the index of all books
+	newdf = newdf.reset_index(drop=True)
+	newdf['Bid'] = range(1, len(newdf) + 1)
+		
+	newdf.to_csv(bookcsv, index=False)
+
+	print("Successfully deleted the book", bid, df.loc[bid-1, 'Name'], 'by', df.loc[bid-1, 'Author'])
 
 
 
@@ -127,37 +136,41 @@ def issue_book():
 	df = pd.read_csv(bookcsv)
 	bid = input("Enter the book ID: ")
 
-	if check_bid(bid, df):
-		bid = int(bid)
-		if df.loc[bid-1, 'Status'] == 'Issued':
-			print("This book is already issued.")
-			print("Therefore, it's not in the library.")
-			print("Please try again with some other book.")
+	if not check_bid(bid, df):
+		return	
+
+	bid = int(bid)
+	if df.loc[bid-1, 'Status'] == 'Issued':
+		print("This book is already issued.")
+		print("Therefore, it's not in the library.")
+		print("Please try again with some other book.")
 	
-		else:
-			df.loc[bid-1, 'Status'] = 'Issued'
-			df.loc[bid-1, 'Issue_count'] += 1
-			df.to_csv(path_or_buf=bookcsv, sep=',', index=False)
-			print("Book succesfully issued.")
+	else:
+		df.loc[bid-1, 'Status'] = 'Issued'
+		df.loc[bid-1, 'Issue_count'] += 1
+		df.loc[bid-1, 'Date_issued'] = date.today()
+		df.to_csv(path_or_buf=bookcsv, sep=',', index=False)
+		print("Book succesfully issued.")
 
 
 
 # Return
-def return_book():
+def return_book(bid):
 	df = pd.read_csv(bookcsv)
-	bid = input("Enter the book ID: ")
 
-	if check_bid(bid, df):
-		bid = int(bid)
-
-		if df.loc[bid-1, 'Status'] == 'Available':
-			print("This book is already avalaible in the library.")
-			print("Please try again with some other book.")	
-			return
+	if not check_bid(bid, df):
+		return	
 		
-		df.loc[bid-1, 'Status'] = 'Available'
-		df.to_csv(path_or_buf=bookcsv, sep=',', index=False)
-		print("Book succesfully returned.")
+	bid = int(bid)
+
+	if df.loc[bid-1, 'Status'] == 'Available':
+		print("This book is already avalaible in the library.")
+		print("Please try again with some other book.")	
+		return
+		
+	df.loc[bid-1, 'Status'] = 'Available'
+	df.to_csv(path_or_buf=bookcsv, sep=',', index=False)
+	print("Book succesfully returned.")
 
 
 
@@ -174,41 +187,17 @@ def show_issued_books():
 
 
 ## GRAPHS
-
-# Books by genre
-# here, we'll print a graph for books by genre to see which book is popular in which genre
-def unique_values(values, freq_list):
-	value_freq_dict = {}
-
-	for i in range(0, len(values)):
-		value = values[i]
-
-		if value in value_freq_dict:
-			value_freq_dict[value] += freq_list[i]
-		else:
-			value_freq_dict[value] = freq_list[i]
-
-	return value_freq_dict
-
-
 def graph_books_by_genre():
 	df = pd.read_csv(bookcsv)
 	
-	genres = list(df.Genre)
-	issue_count = list(df.Issue_count)
-	
-	genre_freq = unique_values(genres, issue_count)
+	genre_freq = df.groupby('Genre')['Issue_count'].sum()
 
-	plt.bar(genre_freq.keys(), genre_freq.values())
+	plt.bar(genre_freq.keys(), genre_freq.values)
 	plt.xlabel('Genres')
 	plt.ylabel('Total no. of issues per genre')
-	plt.xticks(range(0,7), list(genre_freq.keys())[:], rotation=0)
+	plt.xticks(rotation=45)
 	plt.show()
 
-
-# Most borrowed books
-# here, we will just show a graph for number of issues per book
-# lets show the top 10 books
 
 def shorten_words(list1, length):
 	wordlist = []
@@ -248,9 +237,6 @@ def graph_top_ten_books():
 	plt.show()
 
 
-# Top authors
-# here idk which type of graph ill use here
-# but yeah the purpose will be to compare authors on the basis of number of issues all time
 def graph_top_authors():
 	df = pd.read_csv(bookcsv)
 
@@ -258,16 +244,87 @@ def graph_top_authors():
 	df = df.sort_values(ascending=False)
 	df = df.head(10)
 
-	print(df)
-	print(df.keys())
-	print(df.values)
-
 	plt.barh(shorten_words(df.keys(), 15)[::-1], df.values[::-1])
-	plt.xlabel('Name of Books')
-	plt.ylabel('Total no. of issues per books')
+	plt.xlabel('No. of Issues')
+	plt.ylabel('Authors')
 	plt.show()
 
 
+def generate_bill():
+	df = pd.read_csv(bookcsv)
+	libdf = pd.read_csv('libsetup.csv')
+	bid = input('Enter the book ID: ')
+
+	if not check_bid(bid, df):
+		return	
+		
+	bid = int(bid)
+	if df.loc[bid-1, 'Status'] == 'Available':
+		print("This book is not currently issued.")
+		return
+
+	issue_date = pd.to_datetime(df.loc[bid-1, 'Date_issued']).date()
+	today = date.today()
+	days = max(0, (today - issue_date).days)
+	per_day = float(libdf.loc[0, 'Per_day_charge'])
+	fixed = float(libdf.loc[0, 'Fixed_charge'])
+	max_days = int(libdf.loc[0, 'Maximum_days_allowed'])
+	late_charge_per_day = float(libdf.loc[0, 'Late_charge_per_day'])
+	late_days = max(0, days-max_days)
+
+	if days > max_days:
+		late_charge = late_days*late_charge_per_day
+		day_charge = max_days*per_day
+	else:
+		late_charge = 0
+		day_charge = days*per_day
+	
+	total = fixed + late_charge + day_charge
+
+		## printing the bill in nice formatting
+	print()
+	print("=" * 55)
+	print("                  CITY LIBRARY")
+	print("              BOOK RETURN RECEIPT")
+	print("=" * 55)
+
+	print("Bill Date       :", date.today().strftime("%d-%m-%Y"))
+	print("Book ID         :", bid)
+
+	print("-" * 55)
+	print("BOOK DETAILS")
+	print("-" * 55)
+
+	print("Book Name       :", df.loc[bid-1, 'Name'])
+	print("Author          :", df.loc[bid-1, 'Author'])
+	print("Date Issued     :", issue_date.strftime("%d-%m-%Y"))
+	print("Date Returned   :", today.strftime("%d-%m-%Y"))
+	print("Days Borrowed   :", days, "days")
+
+	print("-" * 55)
+	print("BILL BREAKDOWN")
+	print("-" * 55)
+
+	print("Fixed Charge    :", fixed, "/-")
+	print("Daily Charge    :", day_charge, "/-", "(charged", per_day, "/- per day)")
+
+	print("Late Charge     :", late_charge, "/-", "(charged", late_charge_per_day, "/- per day)")
+
+	print("-" * 55)
+	print("TOTAL BILL      :", total, "/-")
+	print("=" * 55)
+
+	print()
+	print("Late Days       :", late_days, "days")
+	print("Maximum Allowed :", max_days, "days")
+
+	print("-" * 55)
+	print("          Thank you for using our library!")
+	print("             We hope you enjoyed your")
+	print("                   reading! 📚")
+	print("                Please visit again!")
+	print("=" * 55)
+	return_book(bid)
 
 
 # Main menu
@@ -287,7 +344,7 @@ def menu():
 	print("  9.  Generate Genre-wise Graph")
 	print(" 10.  Generate Most Borrowed Books Graph")
 	print(" 11.  Generate Top Authors Graph")
-
+	print(" 12.  Generate Bill")
 	print("\n  0.  Exit")
 	print("=" * 50)
 
@@ -329,7 +386,8 @@ elif choice == '6':
 	issue_book()
 
 elif choice == '7':
-	return_book()
+	bid = input("Enter the book ID: ")
+	return_book(bid)
 
 elif choice == '8':
 	show_issued_books()
@@ -343,8 +401,11 @@ elif choice == '10':
 elif choice == '11':
 	graph_top_authors()
 
+elif choice == '12':
+    generate_bill()
+
 elif choice == '0':
 	print("\nThank you for using the Library Management System!")
 
 else:
-	print("\nInvalid choice. Please enter a number from 0 to 11.")
+	print("\nInvalid choice. Please enter a number from 0 to 12.")

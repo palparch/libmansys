@@ -1,31 +1,30 @@
-Bid,Name,Author,Genre,Status,Issue_count
-1,The Lost World,Arthur Conan Doyle,Adventure,Issued,8
-2,The Lost World,Michael Crichton,Science Fiction,Issued,12
-3,Moby Dick,Herman Melville,Adventure,Available,4
-4,Harry Potter and the Chamber of Secrets,J.K. Rowling,Fantasy,Issued,15
-5,The Martian,Andy Weir,Science Fiction,Available,9
-6,1984,George Orwell,Dystopian,Issued,18
-7,The Great Gatsby,F. Scott Fitzgerald,Classic,Available,6
-8,Animal Farm,George Orwell,Political Satire,Available,11
-9,The Godfather,Mario Puzo,Crime,Issued,8
-10,To Kill a Mockingbird,Harper Lee,Classic,Available,5
-11,The Hobbit,J.R.R. Tolkien,Fantasy,Available,13
-12,Dune,Frank Herbert,Science Fiction,Issued,16
-13,Pride and Prejudice,Jane Austen,Romance,Available,7
-14,The Alchemist,Paulo Coelho,Adventure,Issued,10
-15,The Shining,Stephen King,Horror,Issued,14
-16,The Catcher in the Rye,J.D. Salinger,Classic,Available,6
-17,Brave New World,Aldous Huxley,Dystopian,Issued,17
-18,The Da Vinci Code,Dan Brown,Mystery,Issued,13
-19,The Kite Runner,Khaled Hosseini,Drama,Available,9
-20,The Hunger Games,Suzanne Collins,Dystopian,Issued,19
-21,The Book Thief,Markus Zusak,Historical Fiction,Available,8
-22,Sherlock Holmes: The Hound of the Baskervilles,Arthur Conan Doyle,Mystery,Issued,15
-23,The Chronicles of Narnia,C.S. Lewis,Fantasy,Available,12
-24,Fahrenheit 451,Ray Bradbury,Dystopian,Issued,11
-25,The Fault in Our Stars,John Green,Romance,Available,10
-26,It,Stephen King,Horror,Issued,16
-27,The Old Man and the Sea,Ernest Hemingway,Classic,Available,5
-28,The Girl with the Dragon Tattoo,Stieg Larsson,Crime,Issued,14
-29,The Road,Cormac McCarthy,Post-Apocalyptic,Available,7
-30,The Name of the Wind,Patrick Rothfuss,Fantasy,Issued,18
+Bid,Name,Author,Genre,Status,Issue_count,Date_issued
+1,The Lost World,Arthur Conan Doyle,Adventure,Issued,8,2026-08-10
+2,The Lost World,Michael Crichton,Science Fiction,Issued,12,2026-08-08
+3,Moby Dick,Herman Melville,Adventure,Available,4,
+4,Harry Potter and the Chamber of Secrets,J.K. Rowling,Fantasy,Issued,15,2026-08-05
+5,1984,George Orwell,Dystopian,Issued,18,2026-08-01
+6,The Great Gatsby,F. Scott Fitzgerald,Classic,Available,6,
+7,Animal Farm,George Orwell,Political Satire,Available,11,
+8,The Godfather,Mario Puzo,Crime,Issued,8,2026-08-12
+9,To Kill a Mockingbird,Harper Lee,Classic,Available,5,
+10,The Hobbit,J.R.R. Tolkien,Fantasy,Available,13,
+11,Dune,Frank Herbert,Science Fiction,Issued,16,2026-08-03
+12,Pride and Prejudice,Jane Austen,Romance,Available,7,
+13,The Alchemist,Paulo Coelho,Adventure,Issued,10,2026-08-07
+14,The Shining,Stephen King,Horror,Issued,14,2026-08-04
+15,The Catcher in the Rye,J.D. Salinger,Classic,Available,6,
+16,Brave New World,Aldous Huxley,Dystopian,Issued,17,2026-07-30
+17,The Da Vinci Code,Dan Brown,Mystery,Issued,13,2026-08-09
+18,The Kite Runner,Khaled Hosseini,Drama,Available,9,
+19,The Hunger Games,Suzanne Collins,Dystopian,Issued,19,2026-08-02
+20,The Book Thief,Markus Zusak,Historical Fiction,Available,8,
+21,Sherlock Holmes: The Hound of the Baskervilles,Arthur Conan Doyle,Mystery,Issued,15,2026-08-06
+22,The Chronicles of Narnia,C.S. Lewis,Fantasy,Available,12,
+23,Fahrenheit 451,Ray Bradbury,Dystopian,Issued,11,2026-08-11
+24,The Fault in Our Stars,John Green,Romance,Available,10,
+25,It,Stephen King,Horror,Issued,16,2026-07-29
+26,The Old Man and the Sea,Ernest Hemingway,Classic,Available,5,
+27,The Girl with the Dragon Tattoo,Stieg Larsson,Crime,Issued,14,2026-08-13
+28,The Road,Cormac McCarthy,Post-Apocalyptic,Available,7,
+29,The Name of the Wind,Patrick Rothfuss,Fantasy,Issued,18,2026-07-31
