@@ -228,18 +228,12 @@ def shorten_words(list1, length):
 			intermed_list.append('...')
 			letterlist.append(list(intermed_list))
 			intermed_list = []
-
-	
-	print(letterlist)
 	
 	finallist = []
 	for i in letterlist:
 		finallist.append("".join(i))
 	
-	print(finallist)
-
 	return finallist
-
 
 
 
@@ -248,41 +242,54 @@ def graph_top_ten_books():
 	df = df.sort_values(by='Issue_count', ascending=False)
 	df = df.head(10)
 
-	plt.barh(shorten_words(df.Name, 15), df.Issue_count)
+	plt.barh(shorten_words(df.Name, 15)[::-1], df.Issue_count[::-1])
+	plt.xlabel('Name of Books')
+	plt.ylabel('Total no. of issues per books')
+	plt.show()
+
+
+# Top authors
+# here idk which type of graph ill use here
+# but yeah the purpose will be to compare authors on the basis of number of issues all time
+def graph_top_authors():
+	df = pd.read_csv(bookcsv)
+
+	df = df.groupby('Author')['Issue_count'].sum()
+	df = df.sort_values(ascending=False)
+	df = df.head(10)
+
+	print(df)
+	print(df.keys())
+	print(df.values)
+
+	plt.barh(shorten_words(df.keys(), 15)[::-1], df.values[::-1])
 	plt.xlabel('Name of Books')
 	plt.ylabel('Total no. of issues per books')
 	plt.show()
 
 
 
-# Top authors
-# here idk which type of graph ill use here
-# but yeah the purpose will be to compare authors on the basis of number of issues all time
-
-
-
-
 
 # Main menu
 def menu():
-    print("\n" + "=" * 50)
-    print("           📚 LIBRARY MANAGEMENT SYSTEM")
-    print("=" * 50)
+	print("\n" + "=" * 50)
+	print("	   📚 LIBRARY MANAGEMENT SYSTEM")
+	print("=" * 50)
 
-    print("  1.  Add a New Book")
-    print("  2.  Update Book")
-    print("  3.  Delete Book")
-    print("  4.  Search Book")
-    print("  5.  Display All Books")
-    print("  6.  Issue Book")
-    print("  7.  Return Book")
-    print("  8.  Show Issued Books")
-    print("  9.  Generate Genre-wise Graph")
-    print(" 10.  Generate Most Borrowed Books Graph")
-    print(" 11.  Generate Top Authors Graph")
+	print("  1.  Add a New Book")
+	print("  2.  Update Book")
+	print("  3.  Delete Book")
+	print("  4.  Search Book")
+	print("  5.  Display All Books")
+	print("  6.  Issue Book")
+	print("  7.  Return Book")
+	print("  8.  Show Issued Books")
+	print("  9.  Generate Genre-wise Graph")
+	print(" 10.  Generate Most Borrowed Books Graph")
+	print(" 11.  Generate Top Authors Graph")
 
-    print("\n  0.  Exit")
-    print("=" * 50)
+	print("\n  0.  Exit")
+	print("=" * 50)
 
 
 menu()
@@ -290,54 +297,54 @@ menu()
 choice = input("\nEnter your choice: ")
 
 if choice == '1':
-    add_book()
+	add_book()
 
 elif choice == '2':
-    update_book()
+	update_book()
 
 elif choice == '3':
-    delete_book()
+	delete_book()
 
 elif choice == '4':
-    print("\nSearch Book")
-    print("-" * 30)
-    print("1. Search by Book ID")
-    print("2. Search by Book Name")
+	print("\nSearch Book")
+	print("-" * 30)
+	print("1. Search by Book ID")
+	print("2. Search by Book Name")
 
-    choice = input("\nEnter your choice: ")
+	choice = input("\nEnter your choice: ")
 
-    if choice == '1':
-        search_book_by_bid()
+	if choice == '1':
+		search_book_by_bid()
 
-    elif choice == '2':
-        search_book_by_name()
+	elif choice == '2':
+		search_book_by_name()
 
-    else:
-        print("\nInvalid choice.")
+	else:
+		print("\nInvalid choice.")
 
 elif choice == '5':
-    display_books()
+	display_books()
 
 elif choice == '6':
-    issue_book()
+	issue_book()
 
 elif choice == '7':
-    return_book()
+	return_book()
 
 elif choice == '8':
 	show_issued_books()
 
 elif choice == '9':
-    graph_books_by_genre()
+	graph_books_by_genre()
 
 elif choice == '10':
 	graph_top_ten_books()
 
 elif choice == '11':
-    graph_top_authors()
+	graph_top_authors()
 
 elif choice == '0':
-    print("\nThank you for using the Library Management System!")
+	print("\nThank you for using the Library Management System!")
 
 else:
-    print("\nInvalid choice. Please enter a number from 0 to 11.")
+	print("\nInvalid choice. Please enter a number from 0 to 11.")
